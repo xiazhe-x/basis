@@ -8,8 +8,9 @@ import (
 )
 
 var (
-	M3u8Key = []byte("ABCDEFGHIJKLMNOP") // 加密的密钥
+	M3u8Key = []byte("ABCDEFGHIJKLMNOP")
 	Key     = []byte("HEoq8f4N8lLriYIA")
+	Auth    = []byte("5f570a7d150f60bI")
 )
 
 func AesEncryptCBC(origData []byte, key []byte) string {
