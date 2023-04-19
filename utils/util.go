@@ -110,6 +110,16 @@ func RandString(lenNum int) string {
 	return str.String()
 }
 
+func RandAllString(lenNum int) string {
+	str := strings.Builder{}
+	length := len(CHARS)
+	for i := 0; i < lenNum; i++ {
+		l := CHARS[rand.Intn(length)]
+		str.WriteString(l)
+	}
+	return str.String()
+}
+
 //计算当天还剩多少秒
 func SameDaySurplusSecond() int64 {
 	now := time.Now()
