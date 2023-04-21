@@ -26,7 +26,7 @@ func (r *GoRedisStarter) Setup(ctx basis.StarterContext) {
 		Network:  "tcp",                                           //网络类型，tcp or unix，默认tcp
 		Addr:     conf.GetDefault("redis.addr", "127.0.0.1:6379"), //主机名+冒号+端口，默认localhost:6379
 		Password: conf.GetDefault("redis.pwd", ""),                //密码
-		DB:       0,                                               // redis数据库index
+		DB:       conf.GetIntDefault("redis.db", 0),               // redis数据库index
 
 		//连接池容量及闲置连接数量
 		PoolSize:     16, // 连接池最大socket连接数，默认为4倍CPU数， 4 * runtime.NumCPU
