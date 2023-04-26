@@ -32,31 +32,35 @@ func OkWithData(data interface{}, c *gin.Context) {
 Fail
 */
 //403 服务器拒绝请求
-func FailForbidden(message string,c *gin.Context) {
-	StatusResult(http.StatusForbidden, map[string]interface{}{}, "操作失败", c)
+func FailForbidden(message string, c *gin.Context) {
+	StatusResult(http.StatusForbidden, map[string]interface{}{}, message, c)
 }
+
 //401	鉴权
-func FailUnauthorized(message string, c *gin.Context){
+func FailUnauthorized(message string, c *gin.Context) {
 	StatusResult(http.StatusUnauthorized, map[string]interface{}{}, message, c)
 }
+
 //404  找不到资源
-func FailNotFound ( message string, c *gin.Context) {
+func FailNotFound(message string, c *gin.Context) {
 	StatusResult(http.StatusNotFound, map[string]interface{}{}, message, c)
 }
+
 //500	执行中服务器内部错误
 func FailInternalServerError(message string, c *gin.Context) {
 	StatusResult(http.StatusInternalServerError, map[string]interface{}{}, message, c)
 }
+
 //501   参数错误
 func FailNotImplemented(message string, c *gin.Context) {
 	StatusResult(http.StatusNotImplemented, map[string]interface{}{}, message, c)
 }
+
 //502   参数错误
 func FailStatusBadGateway(message string, c *gin.Context) {
 	StatusResult(http.StatusBadGateway, map[string]interface{}{}, message, c)
 }
 
-func FailCodeMsg(code int,message string, c *gin.Context) {
+func FailCodeMsg(code int, message string, c *gin.Context) {
 	StatusResult(code, map[string]interface{}{}, message, c)
 }
-

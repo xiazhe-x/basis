@@ -110,6 +110,18 @@ func RandString(lenNum int) string {
 	return str.String()
 }
 
+/*RandNumString  生成随机数字字符串([0~9])
+  lenNum 长度
+*/
+func RandNumString(lenNum int) string {
+	str := strings.Builder{}
+	length := 10
+	for i := 0; i < lenNum; i++ {
+		str.WriteString(CHARS[52+rand.Intn(length)])
+	}
+	return str.String()
+}
+
 func RandAllString(lenNum int) string {
 	str := strings.Builder{}
 	length := len(CHARS)
