@@ -1,8 +1,12 @@
 package utils
 
 import (
+	"errors"
 	"fmt"
+	"net/url"
 	"os"
+	"sort"
+	"strings"
 	"sync/atomic"
 	"time"
 )
@@ -34,3 +38,67 @@ func sup(i int64, n int) string {
 	return m
 }
 
+//------------------------------------------------		签名
+func SignStr(m map[string]interface{}, signKey string) string {
+	keys := make([]string, 0, len(m))
+	for k, v := range m {
+		if v == "" {
+			continue
+		}
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	v := url.Values{}
+	for _, k := range keys {
+		va := fmt.Sprintf("%v", m[k])
+		if va == "" || va == "0" {
+			continue
+		}
+		v.Add(k, va)
+	}
+	//转成QueryUnescape
+	body := v.Encode()
+	de, _ := url.QueryUnescape(body)
+
+	str := fmt.Sprintf("%s&key=%s", de, signKey)
+	//再将得到的字符串所有字符转换为大写，得到sign值signValue
+	//fmt.Println("签名字符串>", str)
+	sign := strings.ToUpper(MD5([]byte(str)))
+	//fmt.Println("签名结果>", sign)
+	return sign
+}
+
+//换算金额
+func ChByAmount(currency string, amount int) (i int, err error) {
+	switch currency {
+	case "CNY":
+		if amount < 10 {
+			err = errors.New("支付金额过小")
+		}
+		i = amount * 100
+	case "VND":
+		if amount < 350 {
+			err = errors.New("支付金额过小")
+		}
+		i = amount / 100
+	case "USD":
+		if amount < 2 {
+			err = errors.New("支付金额过小")
+		}
+		i = amount * 100
+	}
+	return
+}
+
+//商户汇率时币种转换
+func MchByAmount(currency string, amount uint) (i float64) {
+	switch currency {
+	case "CNY":
+		i = float64(amount) / 100
+	case "VND":
+		i = float64(amount)
+	case "USD":
+		i = float64(amount) / 100
+	}
+	return
+}

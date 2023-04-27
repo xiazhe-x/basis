@@ -22,30 +22,30 @@ import (
 var jsonApi jsoniter.API
 var oJson sync.Once
 
-func DataByJsonStr(params interface{}) string {
+func getJsonIter() jsoniter.API {
 	oJson.Do(func() {
 		jsonApi = jsoniter.ConfigCompatibleWithStandardLibrary
 	})
-	by, err := jsonApi.Marshal(params)
+	return jsonApi
+}
+
+func DataByJsonStr(params interface{}) string {
+	by, err := getJsonIter().Marshal(params)
 	if err != nil {
 		logrus.Error("DataByJsonStr err ", err)
 	}
 	return string(by)
 }
+
 func StrJsonByData(str string, data interface{}) {
-	oJson.Do(func() {
-		jsonApi = jsoniter.ConfigCompatibleWithStandardLibrary
-	})
-	err := jsonApi.Unmarshal([]byte(str), data)
+	err := getJsonIter().Unmarshal([]byte(str), data)
 	if err != nil {
 		logrus.Error("StrJsonByData err ", err)
 	}
 }
+
 func ByteJsonByData(by []byte, data interface{}) error {
-	oJson.Do(func() {
-		jsonApi = jsoniter.ConfigCompatibleWithStandardLibrary
-	})
-	err := jsonApi.Unmarshal(by, data)
+	err := getJsonIter().Unmarshal(by, data)
 	if err != nil {
 		return err
 	}
@@ -147,4 +147,12 @@ func SliIndex(data []int, value int) bool {
 		}
 	}
 	return false
+}
+
+func DataByRedisMap(params interface{}) map[string]interface{} {
+	//	结构体序列化反序列化map 你也可以用其他包进行转化为map,但是注意转化后的键名大小写问题
+	m := make(map[string]interface{})
+	buf, _ := getJsonIter().Marshal(params)
+	_ = getJsonIter().Unmarshal(buf, &m)
+	return m
 }

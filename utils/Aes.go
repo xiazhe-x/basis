@@ -11,6 +11,7 @@ var (
 	M3u8Key = []byte("ABCDEFGHIJKLMNOP")
 	Key     = []byte("HEoq8f4N8lLriYIA")
 	Auth    = []byte("5f570a7d150f60bI")
+	UrlKey  = []byte("CEoq8f4N8lLniYIAECiGt3Yc")
 )
 
 func AesEncryptCBC(origData []byte, key []byte) string {
